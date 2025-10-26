@@ -2,12 +2,15 @@ import { Link } from "react-router";
 import Continue_with_google from "../../components/Continue_with_google";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function CreateAccount() {
   const [firstname, setfirstname] = useState("");
   const [lastname, setlastname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handlesubmit = (e) => {
     e.preventDefault();
@@ -19,8 +22,11 @@ function CreateAccount() {
         password,
       })
       .then((result) => {
-        console.log(result.data);
-        alert(result.data);
+        if(result.data === "already have an account") {
+          alert(result.data);
+          navigate("/signin_page")
+        }
+        
       })
       .catch((err) => {
         console.log("Error is ", err);
