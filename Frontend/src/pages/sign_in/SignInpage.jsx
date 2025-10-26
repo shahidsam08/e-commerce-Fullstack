@@ -2,20 +2,35 @@ import Continue_with_google from "../../components/Continue_with_google";
 import { Link } from "react-router";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function SignInpage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const handleLogin = (e) => {
+  const navigate = useNavigate();
+  const handleLogin = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5002/login', {email, password}).then((result) => {
-       console.log(result.data)
-       alert("Log in successfully!") 
-    }).catch(err => {
-      console.log("Error is : ", err)
-    })
-  }
 
+    try {
+      const response = await axios.post("http://localhost:5002/api/login", {
+        email: email, 
+        password: password
+      });
+      if(response.data === "Log In successfully!") {
+        alert("Log in successfully!")
+        return navigate("/")
+      } else if (response.data === "password is wrong") {
+        return alert("password is wrong! check your password!")
+      } else if (response.data === "Email is wrong!") {
+        return alert("Check your email!")
+      } else {
+        return alert("Something else happen!")
+      }
+    } catch (error) {
+      console.log("The error is " , error)
+      alert("something went wrong!")
+    }
+  }
   return (
     <div>
       <div className="h-[15vh]">
@@ -44,6 +59,7 @@ function SignInpage() {
             type="email"
             placeholder="Enter email address"
             required
+            name="password"
             autoComplete="off"
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -54,6 +70,7 @@ function SignInpage() {
             required
             autoComplete="off"
             onChange={(e) => setPassword(e.target.value)}
+            name="password"
           />
           
           <button className="block border-1 rounded-[0.5rem] h-14 text-2xl w-full lg:w-120 pl-2.5 mb-4 bg-black text-white" type="submit">Submit</button>

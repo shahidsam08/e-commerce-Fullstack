@@ -12,26 +12,28 @@ function CreateAccount() {
 
   const navigate = useNavigate();
 
-  const handlesubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:5002/registers", {
-        firstname,
-        lastname,
-        email,
-        password,
-      })
-      .then((result) => {
-        if(result.data === "already have an account") {
-          alert(result.data);
-          navigate("/signin_page")
-        } 
-      })
-      .catch((err) => {
-        console.log("Error is ", err);
-        alert("something went wrong");
+  const handlesubmit = async (e) =>{
+    e.preventDefault()
+    try {
+      const response = await axios.post("http://localhost:5002/api/registers", {
+        firstname : firstname,
+        lastname : lastname,
+        email : email,
+        password : password
       });
-  };
+      if(response.data === "already have an account") {
+        alert("Already have an account!")
+        return navigate("/signin_page")
+      } else if(response.data === "New user created") {
+         alert("New User Created")
+          return navigate("/signin_page")
+      } else {
+        return alert("something went wrong")
+      }
+    } catch (error) {
+      alert("The error is : ", error)
+    }
+  }
   return (
     <div className="p-8 bg-white">
       <div className="h-[15vh]">
@@ -64,7 +66,7 @@ function CreateAccount() {
 
           {/* or part */}
           <p className="text-2xl">or</p>
-          <form action="/register" method="POST" onSubmit={handlesubmit}>
+          <form onSubmit={handlesubmit}>
             <input
               className="border-1 w-full mb-3 h-14 pl-2 rounded-[0.5rem] text-2xl lg:w-59 mr-2"
               type="text"
@@ -91,6 +93,7 @@ function CreateAccount() {
               name="email"
               placeholder="Enter email address"
               required
+              autoComplete="on"
               onChange={(e) => {
                 setemail(e.target.value);
               }}

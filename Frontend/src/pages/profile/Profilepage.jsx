@@ -1,28 +1,14 @@
-import { useEffect, useState } from "react";
 import Navigation from "../../components/Navigation";
-import axios from "axios";
 
 function Profilepage() {
-  const [email, setemail] = useState("");
-  useEffect(() => {
-    axios
-      .get("http:localhost:5002/api/userdata")
-      .then((response) => {
-        setemail(response.data);
-      })
-      .catch((error) => {
-        console.log("The error is : ", error);
-      });
-  });
 
-  console.log(email)
 
   return (
     <div className="w-full flex flex-col align-middle justify-center items-center gap-5">
       <div className="md:w-full">
         <Navigation />
       </div>
-      <div className="flex flex-col gap-3 border-1 rounded-3xl p-6 justify-center items-center align-middle w-[95%] bg-yellow-100 sm:w-[90%] mb-4 md:w-1/3 md:self-start md:ml-3">
+      <div className="flex flex-col gap-3 border-1 rounded-3xl p-6 justify-center items-center align-middle w-[95%] bg-yellow-100 sm:w-[90%] mb-4 md:w-1/3 md:self-start md:ml-10">
         <div className="border-4 border-black w-fit p-[2px] rounded-[20%] flex flex-col self-center ">
           <img
             className="rounded-[20%]"
@@ -39,7 +25,7 @@ function Profilepage() {
           user_gender
         </p>
         <p className="border-white border-1 size-fit p-2 font-bold text-2xl hover:border-1 hover:border-black rounded-2xl hover:bg-gray-200">
-          {email}
+          User_email
         </p>
         
         <p className="border-white border-1 size-fit p-2 font-bold text-2xl hover:border-1 hover:border-black rounded-2xl hover:bg-gray-200">
