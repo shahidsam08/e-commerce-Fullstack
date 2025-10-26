@@ -22,11 +22,7 @@ function CreateAccount() {
         password,
       })
       .then((result) => {
-        if(result.data === "already have an account") {
-          alert(result.data);
-          navigate("/signin_page")
-        }
-        
+        console.log(result.data) 
       })
       .catch((err) => {
         console.log("Error is ", err);
